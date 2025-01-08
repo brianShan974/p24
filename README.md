@@ -11,3 +11,10 @@ cargo run --release -- <I1> <I2> <I3> <I4>
 
 in the terminal.
 `<I1>`, `<I2>`, `<I3>` and `<I4>` should be integers.
+
+In order to install this solver,
+head to the project directory and run
+
+```
+cargo install --path .
+```

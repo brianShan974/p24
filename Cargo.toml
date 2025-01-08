@@ -5,3 +5,7 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4.5.24", features = ["derive"] }
+
+[[bin]]
+name = "twenty_four_puzzle"
+path = "src/main.rs"
