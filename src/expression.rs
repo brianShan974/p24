@@ -107,33 +107,89 @@ fn gen_exprs_recursive(
     }
 }
 
+enum ExpressionType {
+    Number,
+    AddSub,
+    Mul,
+    Div,
+}
+
+struct Expression {
+    pub(self) expr_str: String,
+    pub(self) expr_type: ExpressionType,
+}
+
 fn postfix_to_infix(expr: &str, numbers: &[Int; 4]) -> Option<String> {
-    let mut stack: Vec<String> = Vec::with_capacity(4);
+    let mut stack: Vec<Expression> = Vec::with_capacity(4);
 
     for next_char in expr.bytes() {
         if (b'1'..=b'4').contains(&next_char) {
             let index = (next_char - b'1') as usize;
-            stack.push(numbers[index].to_string());
+            stack.push(Expression {
+                expr_str: numbers[index].to_string(),
+                expr_type: ExpressionType::Number,
+            });
         } else {
             let op2 = stack.pop()?;
             let op1 = stack.pop()?;
-            let result = match next_char {
-                b'+' => format!("({} + {})", op1, op2),
-                b'-' => format!("({} - {})", op1, op2),
-                b'*' => format!("{} * {}", op1, op2),
-                b'/' => format!("{} / {}", op1, op2),
+            use ExpressionType as T;
+            let expr = match next_char {
+                b'+' => Expression {
+                    expr_str: format!("{} + {}", op1.expr_str, op2.expr_str),
+                    expr_type: T::AddSub,
+                },
+                b'-' => Expression {
+                    expr_str: format!("{} - {}", op1.expr_str, op2.expr_str),
+                    expr_type: T::AddSub,
+                },
+                b'*' => {
+                    let expr_str = match (op1.expr_type, op2.expr_type) {
+                        (T::AddSub, T::AddSub) => {
+                            format!("({}) * ({})", op1.expr_str, op2.expr_str)
+                        }
+                        (T::AddSub, _) => {
+                            format!("({}) * {}", op1.expr_str, op2.expr_str)
+                        }
+                        (_, T::AddSub) => {
+                            format!("{} * ({})", op1.expr_str, op2.expr_str)
+                        }
+                        _ => format!("{} * {}", op1.expr_str, op2.expr_str),
+                    };
+                    Expression {
+                        expr_str,
+                        expr_type: T::Mul,
+                    }
+                }
+                b'/' => {
+                    let expr_str = match (op1.expr_type, op2.expr_type) {
+                        (T::AddSub, T::AddSub) => {
+                            format!("({}) / ({})", op1.expr_str, op2.expr_str)
+                        }
+                        (T::AddSub, _) => {
+                            format!("({}) / {}", op1.expr_str, op2.expr_str)
+                        }
+                        (_, T::AddSub) | (_, T::Div) => {
+                            format!("{} / ({})", op1.expr_str, op2.expr_str)
+                        }
+                        _ => format!("{} / {}", op1.expr_str, op2.expr_str),
+                    };
+                    Expression {
+                        expr_str,
+                        expr_type: T::Div,
+                    }
+                }
                 _ => {
                     return None;
                 }
             };
-            stack.push(result);
+            stack.push(expr);
         }
     }
 
     if stack.len() > 1 {
         None
     } else {
-        stack.pop()
+        stack.pop().map(|op| op.expr_str)
     }
 }
 
