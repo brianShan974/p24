@@ -146,9 +146,9 @@ fn evaluate_expression_test() {
 
 #[test]
 fn gen_exprs_test() {
-    let shape = "NNO";
+    let shape = "NNNNOOO";
     let exprs = gen_exprs(shape).unwrap();
-    println!("{:?}", exprs);
+    assert!(exprs.contains(&"1234-++".to_string()))
 }
 
 #[test]

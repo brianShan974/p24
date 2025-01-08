@@ -43,7 +43,7 @@ impl Rational {
 
         if b == d {
             Self {
-                numerator: a + c,
+                numerator: a - c,
                 denominator: unsafe { NonZeroI32::new_unchecked(b) },
             }
         } else {
