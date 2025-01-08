@@ -6,8 +6,8 @@ In order to use this solver,
 please run
 
 ```
-cargo run --release
+cargo run --release -- <I1> <I2> <I3> <I4>
 ```
 
 in the terminal.
-The input numbers are in `main.rs`.
+`<I1>`, `<I2>`, `<I3>` and `<I4>` should be integers.
