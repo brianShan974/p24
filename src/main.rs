@@ -1,5 +1,3 @@
-#![warn(dead_code)]
-
 mod arg_parsing;
 mod expression;
 mod maths;
