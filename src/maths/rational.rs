@@ -1,6 +1,6 @@
 use std::num::NonZeroI32;
 
-use crate::{Float, Int};
+use crate::Int;
 
 #[derive(Debug, Clone)]
 pub struct Rational {
@@ -9,13 +9,6 @@ pub struct Rational {
 }
 
 impl Rational {
-    pub fn new(numerator: Int, denominator: Int) -> Option<Self> {
-        Some(Self {
-            numerator,
-            denominator: NonZeroI32::new(denominator)?,
-        })
-    }
-
     pub fn from_int(value: Int) -> Self {
         Self {
             numerator: value,
@@ -97,30 +90,6 @@ impl Rational {
         self.numerator == 0
     }
 
-    pub fn simplify(&self) -> Self {
-        if self.is_zero() {
-            self.clone()
-        } else {
-            let a = self.numerator;
-            let b: Int = self.denominator.into();
-            let factor = gcd(a.abs(), b.abs());
-
-            let sign = (a * b).signum();
-
-            Self {
-                numerator: sign * a / factor,
-                denominator: unsafe { NonZeroI32::new_unchecked(b / factor) },
-            }
-        }
-    }
-
-    pub fn evaluate_float(&self) -> Float {
-        let a = self.numerator;
-        let b: Int = self.denominator.into();
-
-        a as Float / b as Float
-    }
-
     pub fn evaluate_int(&self) -> Option<Int> {
         let a = self.numerator;
         let b: Int = self.denominator.into();
@@ -131,23 +100,4 @@ impl Rational {
             Some(a / b)
         }
     }
-}
-
-fn gcd(a: Int, b: Int) -> Int {
-    if a == 1 || b == 1 {
-        1
-    } else if a == 0 {
-        b
-    } else if b == 0 {
-        a
-    } else if a > b {
-        gcd(b, a % b)
-    } else {
-        gcd(a, b % a)
-    }
-}
-
-#[test]
-fn test_gcd() {
-    assert_eq!(6, gcd(48, 18));
 }

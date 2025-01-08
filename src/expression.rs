@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 use crate::maths::rational::Rational;
 use crate::Int;
 
