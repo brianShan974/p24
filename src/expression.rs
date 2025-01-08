@@ -13,7 +13,7 @@ pub fn try_solve(numbers: &[Int; 4]) -> Option<String> {
         let exprs = gen_exprs(shape)?;
         for expr in exprs {
             if evaluate_expression(&expr, numbers) == Some(24) {
-                return Some(expr);
+                return postfix_to_infix(&expr, numbers);
             }
         }
     }
@@ -109,6 +109,36 @@ fn gen_exprs_recursive(
     }
 }
 
+fn postfix_to_infix(expr: &str, numbers: &[Int; 4]) -> Option<String> {
+    let mut stack: Vec<String> = Vec::with_capacity(4);
+
+    for next_char in expr.bytes() {
+        if (b'1'..=b'4').contains(&next_char) {
+            let index = (next_char - b'1') as usize;
+            stack.push(numbers[index].to_string());
+        } else {
+            let op2 = stack.pop()?;
+            let op1 = stack.pop()?;
+            let result = match next_char {
+                b'+' => format!("({} + {})", op1, op2),
+                b'-' => format!("({} - {})", op1, op2),
+                b'*' => format!("{} * {}", op1, op2),
+                b'/' => format!("{} / {}", op1, op2),
+                _ => {
+                    return None;
+                }
+            };
+            stack.push(result);
+        }
+    }
+
+    if stack.len() > 1 {
+        None
+    } else {
+        stack.pop()
+    }
+}
+
 #[test]
 fn evaluate_expression_test() {
     let numbers: [Int; 4] = [5, 5, 5, 1];
@@ -121,4 +151,13 @@ fn gen_exprs_test() {
     let shape = "NNO";
     let exprs = gen_exprs(shape).unwrap();
     println!("{:?}", exprs);
+}
+
+#[test]
+fn postfix_to_infix_test() {
+    let numbers: [Int; 4] = [5, 5, 5, 1];
+    let expr = "142/-3*";
+
+    let result = "(5 - 1 / 5) * 5".to_string();
+    assert_eq!(result, postfix_to_infix(expr, &numbers).unwrap())
 }
