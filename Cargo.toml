@@ -2,6 +2,9 @@
 name = "p24"
 version = "0.1.0"
 edition = "2024"
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/brianShan974/p24"
 
 [dependencies]
 clap = { version = "4.5.24", features = ["derive"] }
