@@ -29,10 +29,10 @@ fn evaluate_expression(expr: &str, numbers: &[Int; 4]) -> Option<Int> {
             let op2 = stack.pop()?;
             let op1 = stack.pop()?;
             let result = match next_char {
-                b'+' => op1.add(&op2),
-                b'-' => op1.sub(&op2),
-                b'*' => op1.mul(&op2),
-                b'/' => op1.div(&op2)?,
+                b'+' => op1 + op2,
+                b'-' => op1 - op2,
+                b'*' => op1 * op2,
+                b'/' => (op1 / op2)?,
                 _ => {
                     return None;
                 }

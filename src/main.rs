@@ -1,12 +1,5 @@
-mod arg_parsing;
-mod expression;
-mod maths;
-
-use arg_parsing::Args;
 use clap::Parser;
-use expression::try_solve;
-
-type Int = i32;
+use p24::{arg_parsing::Args, expression::try_solve};
 
 fn main() {
     let args = Args::parse();
