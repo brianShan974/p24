@@ -94,10 +94,6 @@ impl Rational {
         let a = self.numerator;
         let b: Int = self.denominator.into();
 
-        if a % b != 0 {
-            None
-        } else {
-            Some(a / b)
-        }
+        if a % b != 0 { None } else { Some(a / b) }
     }
 }

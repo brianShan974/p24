@@ -1,5 +1,5 @@
-use crate::maths::rational::Rational;
 use crate::Int;
+use crate::maths::rational::Rational;
 
 const DIGITS: [&str; 4] = ["1", "2", "3", "4"];
 const OPS: [&str; 4] = ["+", "-", "*", "/"];
