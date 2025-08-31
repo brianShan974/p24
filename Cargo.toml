@@ -1,5 +1,5 @@
 [package]
-name = "twenty_four_puzzle"
+name = "p24"
 version = "0.1.0"
 edition = "2021"
 
@@ -7,5 +7,5 @@ edition = "2021"
 clap = { version = "4.5.24", features = ["derive"] }
 
 [[bin]]
-name = "twenty_four_puzzle"
+name = "p24"
 path = "src/main.rs"
