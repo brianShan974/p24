@@ -126,7 +126,14 @@ fn postfix_to_infix(expr: &str, numbers: &[Int; 4]) -> Option<String> {
         if (b'1'..=b'4').contains(&next_char) {
             let index = (next_char - b'1') as usize;
             stack.push(Expression {
-                expr_str: numbers[index].to_string(),
+                expr_str: {
+                    let number = numbers[index];
+                    if number >= 0 {
+                        format!("{number}")
+                    } else {
+                        format!("({number})")
+                    }
+                },
                 expr_type: ExpressionType::Number,
             });
         } else {
@@ -212,6 +219,17 @@ fn postfix_to_infix_test() {
     let numbers: [Int; 4] = [5, 5, 5, 1];
     let expr = "142/-3*";
 
-    let result = "(5 - 1 / 5) * 5".to_string();
-    assert_eq!(result, postfix_to_infix(expr, &numbers).unwrap())
+    let result = Some("(5 - 1 / 5) * 5".to_string());
+    assert_eq!(result, postfix_to_infix(expr, &numbers))
+}
+
+#[test]
+fn try_solve_test() {
+    let numbers: [Int; _] = [5, 5, -2121892813942098488, 2121892813942098488];
+    let result = try_solve(&numbers);
+
+    assert_eq!(
+        result,
+        Some("5 * 5 + (-2121892813942098488) / 2121892813942098488".to_string())
+    )
 }
