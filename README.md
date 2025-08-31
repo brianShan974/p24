@@ -31,3 +31,7 @@ p24 <I1> <I2> <I3> <I4>
 
 in the terminal,
 where `<I1>`, `<I2>`, `<I3>` and `<I4>` should be integers.
+This crate now uses `i64` as the integer type,
+so please make sure that the inputs are valid `i64`s.
+The reason why this crate uses `i64` instead of `i128` is to avoid overflow when calculating the sum/product/difference/quotient between `i64`s,
+because all calculations are in fact done with `i128`s.
