@@ -1,20 +1,33 @@
-# twenty-four-puzzle
+# p24
 
-My implementation of the 24 puzzle solver.
+My implementation of a 24 puzzle solver in rust.
+Currently, this solver stops when it finds the first solution,
+so it only finds 1 solution.
+
+## Installation
+
+You can either clone the repo and run
+
+```
+cargo install --path .
+```
+
+inside the project directory, or run
+
+```
+cargo install p24
+```
+
+to install from [crates.io](https://crates.io/).
+
+## Usage
 
 In order to use this solver,
 please run
 
 ```
-cargo run --release -- <I1> <I2> <I3> <I4>
+p24 <I1> <I2> <I3> <I4>
 ```
 
-in the terminal.
-`<I1>`, `<I2>`, `<I3>` and `<I4>` should be integers.
-
-In order to install this solver,
-head to the project directory and run
-
-```
-cargo install --path .
-```
+in the terminal,
+where `<I1>`, `<I2>`, `<I3>` and `<I4>` should be integers.
